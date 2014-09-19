@@ -1,0 +1,177 @@
+******************************************************************
+Hide servers from /map & /links, hideserver.c -- Documentation
+******************************************************************
+
+Table of contents:
+------------------
+
+1. Description
+2. Authors
+3. Feedback
+4. Requirements
+5. Installation
+6. Configuration
+7. Change Log
+
+==================================================================
+1. Description
+==================================================================
+
+This module allows you to hide certain servers from the output of
+/map and /links, or you can restricts the use of /map and /links
+with it to IRCops only. A configurable reason can be optionally
+shown too.
+
+==================================================================
+2. Authors
+==================================================================
+
+Written by: AngryWolf <angrywolf@flashmail.com>
+
+==================================================================
+3. Feedback
+==================================================================
+
+If you find bugs, please read http://www.angrywolf.org/bugs.php
+first, then report them at http://angrywolf.clanintern-irc.de/.
+
+I accept questions and opinions either on my forum,
+http://unrealircd.proboards24.com/, or privately by email.
+
+Thank you for using my module!
+
+==================================================================
+4. Requirements
+==================================================================
+
+To install this module, you need all of the following:
+
+* Unreal >=3.2-beta19
+* One of the supported operating systems (see unreal32docs.html)
+      
+==================================================================
+5. Installation
+==================================================================
+
+See http://angrywolf.linktipp.org/compiling.php?lang=en
+
+==================================================================
+6. Configuration
+==================================================================
+
+These directives below should be placed into your configuration
+file. Modify them as you wish.
+
+hideserver
+{
+	/*
+	 * Enable this (specify "yes" as a value) if you'ld like
+	 * to restrict the usage of /map to IRCOps only.
+	 */
+
+	disable-map no;
+
+	/*
+	 * The same as above, but now the setting applies to /links
+	 */
+
+	disable-links no;
+
+	/*
+	 * They are the messages that will be displayed when a user
+	 * (non-ircop) tries to do a /map or /links, and the
+	 * corresponding command is disabled. The existence of three
+	 * stars in the beginning of the message is recommended.
+	 * If the directives below are not present (for instance,
+	 * they are commented out), users will receive only an
+	 * "End of /<command>" message.
+	 */
+
+	map-deny-message "*** Command /map is disabled for security reasons";
+	links-deny-message "*** Command /links is disabled for security reasons";
+
+	/*
+	 * You can also hide only specific servers. This block has
+	 * a meaning only if at least one of the /map and /links
+	 * commands is enabled. Works like the uline block, simply
+	 * put as many server names in this block as you want.
+	 * If you include the name of the local server in this list,
+	 * it will be ignored.
+	 */
+
+	hide
+	{
+		hub4.test.com;
+		leaf3.test.com;
+	};
+};
+
+==================================================================
+7. Change Log
+==================================================================
+
+$Log: hideserver.txt,v $
+Revision 4.8  2004/04/05 07:27:12  angrywolf
+- Made it so you can disable only /links or /map if you want
+  (suggested by Rocko).
+
+Revision 4.7  2004/03/08 21:23:27  angrywolf
+- Fixed some bugs that could cause crash if you compile the module
+  statically (for example, under Windows).
+
+Revision 4.6  2004/02/17 20:41:24  angrywolf
+- Fixed a bug with IRCOp privileges in /links and /map,
+  reported by sergios.
+
+Revision 4.5  2004/02/11 20:11:26  angrywolf
+- Local server will never be hidden, suggested by nexus.
+
+Revision 4.4  2004/02/08 14:51:48  angrywolf
+- Fixed a /stats problem.
+
+Revision 4.3  2004/02/08 14:46:49  angrywolf
+- Fix for the previous fix.
+
+Revision 4.2  2004/02/08 14:41:08  angrywolf
+- Fixed a bug in the configuration parser routine,
+  reported by nexus.
+
+Revision 4.1  2004/02/08 11:11:56  angrywolf
+- Now you can hide only certain servers from the output of
+  /map and /links (requested by nexus).
+- RPL_MAPEND and RPL_ENDOFLINKS aren't shown any longer
+  if a denial message is configured.
+- Renamed the module to 'hideserver'.
+
+Revision 3.6  2004/02/03 10:53:16  angrywolf
+- Windows compilation fixes.
+
+Revision 3.5  2004/01/28 22:13:02  angrywolf
+- Made the removal of command overrides more secure.
+
+Revision 3.4  2003/11/29 19:35:27  angrywolf
+*** empty log message ***
+
+Revision 3.3  2003/11/29 19:30:51  angrywolf
+- Fixed a win32 crash bug regarding ModuleGetError, reported by TuX.
+
+Revision 3.2  2003/11/27 13:38:20  angrywolf
+- Minor fix on hooks & cmdoverride objects.
+
+Revision 3.1  2003/11/24 19:56:20  angrywolf
+- Now you can let the server display a notice message
+  if non-ircop users try to use /map and /links to reason
+  why the commands are disabled. The messages are fully
+  configurable with directives set::map-deny-message and
+  set::links-deny-message. This feature was requested by
+  penna.
+
+Revision 2.1  2003/11/23 22:10:50  angrywolf
+- Replaced ERR_NOPRIVILEGES to RPL_MAPEND and RPL_ENDOFLINKS.
+  This will prevent breaking the compatibility with RFC
+
+Revision 1.1  2003/11/22 21:16:57  angrywolf
+- Initial revision
+
+==================================================================
+$Id: hideserver.txt,v 4.8 2004/04/05 07:27:12 angrywolf Exp $
